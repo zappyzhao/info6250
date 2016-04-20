@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+		
+	<bean id="profileValidator"
+		class="com.zappy.myapp.validator.ProfileValidator">
+	</bean>	
+	<bean id="userValidator"
+		class="com.zappy.myapp.controller.UserValidator">
+	</bean>
+	<bean id="userLoginValidator"
+		class="com.zappy.myapp.validator.UserLoginValidator">
+	</bean>
+	<bean id="messageValidator"
+		class="com.zappy.myapp.validator.MessageValidator">
+	</bean>
+	<bean id="userDAO" class="com.zappy.myapp.dao.UserDAO"></bean>
+	<bean id="messageDAO" class="com.zappy.myapp.dao.MessageDAO"></bean>
+</beans>
