@@ -1,9 +1,11 @@
 package com.zappy.myapp.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
@@ -15,6 +17,86 @@ public class UserDAO extends DAO {
 
 	public UserDAO() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	public boolean deleteUser(String username) {
+		try {
+			begin();
+			Query q = getSession().createQuery("delete from Person where username=:username");
+			q.setString("username", username);
+			int result = q.executeUpdate();
+			if(result!=0) {
+				commit();
+				return true;
+			}
+			else {
+				System.out.println("Could not delete person: "+username);
+            	return false;
+            }
+		} catch(Exception e) {
+			rollback();
+			System.out.println("Could not delete person: "+username);
+		}
+		return false;
+	}
+	
+	public int getUserNumber() {
+		try {
+			begin();
+			Query q = getSession().createQuery("from User");
+			int number = q.list().size();
+			return number;
+			
+		} catch(Exception e) {
+			rollback();
+			System.out.println("Could not get User Size!..." + e);
+		}
+		return -1;
+	}
+	
+	public ArrayList<User> getAllUsers(int page, int userPerPage) {
+		try {
+			begin();
+			Query q = getSession().createQuery("from User");
+			q.setFirstResult((page-1)*userPerPage);
+			q.setMaxResults(userPerPage);
+			ArrayList<User> userList = (ArrayList<User>) q.list();
+			return userList;
+			
+		} catch(Exception e) {
+			rollback();
+			System.out.println("Could not get All Users!..." + e);
+		}
+		return null;
+	}
+	
+	public List<User> getQuickSearch(String gender, String country, String state, String city) {
+		try {
+			begin();
+			Criteria cr = getSession().createCriteria(User.class);
+			Criterion genderCri = Restrictions.eq("gender", gender);
+			Criterion countryCri = Restrictions.eq("country", country);
+			Criterion stateCri = Restrictions.eq("state", state);
+			Criterion cityCri = Restrictions.eq("city", city);
+			Conjunction conjunction = Restrictions.conjunction();
+			conjunction.add(genderCri);
+			conjunction.add(countryCri);
+			conjunction.add(stateCri);
+			conjunction.add(cityCri);
+			cr.add(conjunction);
+			
+            List<User> list = cr.list();
+            
+            if((list != null) && (list.size()>0)) {
+//            	User user = (User) q.uniqueResult();
+	            commit();
+	            return list;
+            }
+		} catch(Exception e) {
+			rollback();
+			System.out.println("Could not find User through quick search!" + e);
+		}
+		return null;
 	}
 	
 	public boolean updateProfile(long personID, String aboutMe, String personality, String aboutLookingFor, 
@@ -107,11 +189,12 @@ public class UserDAO extends DAO {
 		return false;
 	}
 	
-	public User getUserByUsername(String username) {
+	public User getUserById(String id) {
 		try {
 			begin();
-            Query q = getSession().createQuery("from User u where u.username=:username");
-            q.setParameter("username", username);
+			long personID = Long.parseLong(id);
+            Query q = getSession().createQuery("from User where personID=:personID");
+            q.setParameter("personID", personID);
             List list = q.list();
             
             if((list != null) && (list.size()>0)) {
@@ -119,8 +202,24 @@ public class UserDAO extends DAO {
 	            commit();
 	            return user;
             }
-            else {
-            	return null;
+		} catch(Exception e) {
+			rollback();
+			System.out.println("Could not get User of id " + id + ", Exception: " + e);
+		}
+		return null;
+	}
+	
+	public User getUserByUsername(String username) {
+		try {
+			begin();
+            Query q = getSession().createQuery("from User where username=:username");
+            q.setParameter("username", username);
+            List list = q.list();
+            
+            if((list != null) && (list.size()>0)) {
+            	User user = (User) q.uniqueResult();
+	            commit();
+	            return user;
             }
 		} catch(Exception e) {
 			rollback();

@@ -1,0 +1,18 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:webflow="http://www.springframework.org/schema/webflow-config"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/webflow-config
+http://www.springframework.org/schema/webflow-config/spring-webflow-config-2.0.xsd">
+
+<bean name="/addStaff.htm" class="org.springframework.webflow.mvc.servlet.FlowController">
+	<property name="flowExecutor" ref="flowExecutor" />
+</bean>
+
+<webflow:flow-executor id="flowExecutor" />
+	<webflow:flow-registry id="flowRegistry">
+		<webflow:flow-location path="/WEB-INF/flows/addStaff.xml" />
+	</webflow:flow-registry>
+
+</beans>

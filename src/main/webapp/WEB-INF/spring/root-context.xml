@@ -17,6 +17,10 @@
 	<bean id="messageValidator"
 		class="com.zappy.myapp.validator.MessageValidator">
 	</bean>
+	<bean id="adminValidator"
+		class="com.zappy.myapp.validator.AdminValidator">
+	</bean>
 	<bean id="userDAO" class="com.zappy.myapp.dao.UserDAO"></bean>
+	<bean id="adminDAO" class="com.zappy.myapp.dao.AdminDAO"></bean>
 	<bean id="messageDAO" class="com.zappy.myapp.dao.MessageDAO"></bean>
 </beans>

@@ -33,6 +33,9 @@ public class UpdateProfileController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public String doSubmit(@ModelAttribute("user") User user, BindingResult result, HttpServletRequest request) {
+		if(request.getSession().getAttribute("user")==null) {
+			return "error";
+		}
 		validator.validate(user, result);
 		if (result.hasErrors()) {
 			return "updateProfile";
@@ -64,7 +67,10 @@ public class UpdateProfileController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public String initializeForm(@ModelAttribute("user") User user, BindingResult result) {
+	public String initializeForm(@ModelAttribute("user") User user, BindingResult result,HttpServletRequest request) {
+		if(request.getSession().getAttribute("user")==null) {
+			return "error";
+		}
 		return "updateProfile";
 	}
 }

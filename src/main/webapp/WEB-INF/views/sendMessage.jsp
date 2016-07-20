@@ -20,23 +20,55 @@
 <body>
 	<nav class="myNav">
 		<span>Welcome ${sessionScope.user.username}!</span> <a
-			href="logout.htm">Log Out</a> <a href='change.jsp'>Change my
-			password</a> <a href='viewContacts.jsp'>View My Contacts</a> <a
-			href='details.htm'>View My Profile</a> <a href='loginUser.htm'>Back
-			To Home Page</a>
+			href="logout.htm">Log Out</a> <a href='#'>Change my password</a> <a
+			href='#'>View My Contacts</a> <a href='details.htm'>View My
+			Profile</a> <a href='loginUser.htm'>Back To Home Page</a>
 	</nav>
-	
+	<div style="margin:0 auto; margin-top:3%; color:red;"><c:if test="${not empty sessionScope.messageError }">${sessionScope.messageError }</c:if></div>
 	<form:form action="sendMessage.htm" method="post" commandName="message">
 		<table align="center">
-			<tr><th>From (Username): </th><td><form:input path="fromUser.username" value="${sessionScope.user.username}" class="form-control" required="required" /></td></tr>
-			<tr><th>To (Username): </th><td><form:input path="toUser.username" class="form-control" required="required" /></td></tr>
-			<tr><th>Subject: </th><td><form:input path="title" class="form-control" required="required" /></td></tr>
-			<tr><th>Message: </th><td><form:textarea path="message" class="form-control" required="required" rows="5"></form:textarea> </td></tr>
-			
+			<tr>
+				<th>From (Username):</th>
+				<td><form:input path="fromUser.username"
+						value="${sessionScope.user.username}" class="form-control"
+						required="required" />
+						<form:errors path="fromUser.username" ></form:errors></td>
+			</tr>
+			<c:choose>
+				<c:when test="${not empty requestScope.toUser }">
+					<tr>
+						<th>To (Username):</th>
+						<td><form:input path="toUser.username"
+								value="${requestScope.toUser }" class="form-control"
+								required="required" />
+								<form:errors path="toUser.username" ></form:errors></td>
+					</tr>
+				</c:when>
+				<c:otherwise>
+					<tr>
+						<th>To (Username):</th>
+						<td><form:input path="toUser.username" class="form-control"
+								required="required" />
+								<form:errors path="toUser.username" ></form:errors></td>
+					</tr>
+				</c:otherwise>
+			</c:choose>
+			<tr>
+				<th>Subject:</th>
+				<td><form:input path="title" class="form-control"
+						required="required" /></td>
+			</tr>
+			<tr>
+				<th>Message:</th>
+				<td><form:textarea path="message" class="form-control"
+						required="required" rows="5"></form:textarea>
+					<form:errors path="message" ></form:errors></td>
+			</tr>
+
 		</table>
 		<br />
-			<input type="submit" value="Send" class="btn btn-success" id="submit" />
-		
+		<input type="submit" value="Send" class="btn btn-success" id="submit" />
+
 	</form:form>
 </body>
 </html>

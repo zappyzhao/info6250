@@ -17,6 +17,10 @@ private static final Logger log = Logger.getAnonymousLogger();
 	protected DAO() {
     }
 	
+	public static Session getCurrentSession() {
+		return sessionFactory.getCurrentSession();
+	}
+	
 	public static Session getSession()
     {
         Session session = (Session) DAO.sessionThread.get();

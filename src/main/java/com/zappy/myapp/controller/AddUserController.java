@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zappy.myapp.dao.UserDAO;
 import com.zappy.myapp.pojo.User;
@@ -19,7 +20,6 @@ import com.zappy.myapp.pojo.User;
 
 
 @Controller
-@RequestMapping("/addUser.htm")
 public class AddUserController {
 
 	@Autowired
@@ -34,11 +34,44 @@ public class AddUserController {
 		binder.setValidator(validator);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value="/addUser1.htm", method = RequestMethod.POST)
+	protected @ResponseBody String doSubmitAction1(@ModelAttribute("user") User user, BindingResult result, HttpServletRequest request) throws Exception {
+		validator.validate(user, result);
+		if (result.hasErrors()) {
+			return "error";
+		}
+		
+		if(request.getSession().getAttribute("user") != null) {
+			return "success";
+		}
+		
+//		System.out.println(request.getAttribute("password"));
+
+		try {
+			if(userDao.emailExists(user.getEmail().getEmailAdd())){
+				return "warning1";
+			}
+			
+			if(userDao.usernameExists(user.getUsername())) {
+				return "warning2";
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Exception: " + e.getMessage());
+		}
+
+		return "success";
+	}
+	
+	@RequestMapping(value="/addUser.htm", method = RequestMethod.POST)
 	protected String doSubmitAction(@ModelAttribute("user") User user, BindingResult result, HttpServletRequest request) throws Exception {
 		validator.validate(user, result);
 		if (result.hasErrors()) {
 			return "index";
+		}
+		
+		if(request.getSession().getAttribute("user") != null) {
+			return "addSuccess";
 		}
 
 		try {
@@ -56,9 +89,9 @@ public class AddUserController {
 		return "addSuccess";
 	}
 	
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value="/addUser.htm", method = RequestMethod.GET)
 	public String initializeForm(@ModelAttribute("user") User user, BindingResult result) {
-
+		
 		return "index";
 	}
 }

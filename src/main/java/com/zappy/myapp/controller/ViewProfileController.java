@@ -24,6 +24,10 @@ public class ViewProfileController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String showProfile(HttpServletRequest request) {
+		if(request.getSession().getAttribute("user")==null) {
+			return "error";
+		}
+		
 		User u = (User) request.getSession().getAttribute("user");
 //		System.out.println(u.getHometown()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		request.setAttribute("profile", u);

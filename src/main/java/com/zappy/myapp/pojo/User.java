@@ -3,6 +3,7 @@ package com.zappy.myapp.pojo;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,10 +21,10 @@ public class User extends Person {
 //	@Column(name = "memberId", unique = true, nullable = false)
 //	private long memberId;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "fromUser")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "fromUser",cascade=CascadeType.ALL)
 	private Set<Message> messageIsent = new HashSet<Message>();
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "toUser")//,orphanRemoval=true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "toUser",cascade=CascadeType.ALL, orphanRemoval=true)//,orphanRemoval=true)
 	private Set<Message> messageIreceived = new HashSet<Message>();
 
 	@Column(name = "aboutMe")

@@ -28,11 +28,23 @@ public class MessageController {
 	
 	@Autowired
 	MessageDAO messageDAO;
+	
+	@Autowired
 	UserDAO userDAO;
 	
 	@InitBinder
 	private void initBinder(WebDataBinder binder) {
 		binder.setValidator(validator);
+	}
+	
+	@RequestMapping(value="/deleteMessage.htm", method = RequestMethod.POST)
+	public String deleteMessage(HttpServletRequest request) {
+//		System.out.println("Inside of deleteMessage Controller!....");
+//		System.out.println("Message ID to be deleted is: "+request.getParameter("messageToBeDeleteId"));
+		
+		messageDAO.deleteMessage(request.getParameter("messageToBeDeleteId"));
+		
+		return "addSuccess";
 	}
 	
 	@RequestMapping(value= "/sendMessage.htm", method = RequestMethod.POST)
@@ -42,26 +54,42 @@ public class MessageController {
 			return "sendMessage";
 		}
 		
-		try {
-			User fromUser = (User) request.getSession().getAttribute("user");
-			User toUser = userDAO.getUserByUsername(message.getToUser().getUsername());
-			if(messageDAO.sendMessage(fromUser, toUser, message.getTitle(), message.getMessage())) {
-				System.out.println("!!!!!!!!!!!!!message sent");
+		User fromUser = userDAO.getUserByUsername(message.getFromUser().getUsername());
+		User toUser = userDAO.getUserByUsername(message.getToUser().getUsername());
+		
+		request.getSession().removeAttribute("messageError");
+		if(fromUser==null) {
+			request.getSession().setAttribute("messageError", "Please enter valid Sender");
+			return "sendMessage";
+		}
+		if(toUser==null) {
+//			System.out.println("inside of toUser null..................");
+			request.getSession().setAttribute("messageError", "Please enter valid Receiver");
+			return "sendMessage";
+		}
+		
+		messageDAO.sendMessage(fromUser, toUser, message.getTitle(), message.getMessage());
+//				System.out.println("!!!!!!!!!!!!!message sent");
 				User newUser = userDAO.getUserByUsername(fromUser.getUsername());
 				request.getSession().setAttribute("user",newUser);
 				return "addSuccess";
-			}
-		} catch (Exception e) {
-			System.out.println("Send Message in controller Exception: " + e.getMessage());
-		}
-		
-		System.out.println("from message controller: "+message.getFromUser().getUsername()+", "+message.getMessage());
-		return null;
 		
 	}
 	
 	@RequestMapping(value= "/newMessage.htm", method = RequestMethod.GET)
-	public String showMessageWindow(Model model) {
+	public String showMessageWindow(Model model, HttpServletRequest request) {
+		if(request.getSession().getAttribute("user")==null) {
+			return "error";
+		}
+		if(request.getSession().getAttribute("messageError")!=null) {
+			request.getSession().removeAttribute("messageError");
+		}
+		
+		if(request.getParameter("toUser") != null) {
+			request.setAttribute("toUser", request.getParameter("toUser"));
+//			System.out.println("inside message Controller, get toUser from request scope: " + request.getParameter("toUser"));
+		}
+		
 		model.addAttribute("message", new Message());
 		return "sendMessage";
 	}

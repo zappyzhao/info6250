@@ -20,8 +20,8 @@
 <body>
 	<nav class="myNav">
 		<span>Welcome ${sessionScope.user.username}!</span> <a
-			href="logout.htm">Log Out</a> <a href='change.jsp'>Change my
-			password</a> <a href='viewContacts.jsp'>View My Contacts</a> <a
+			href="logout.htm">Log Out</a> <a href='#'>Change my
+			password</a> <a href='#'>View My Contacts</a> <a
 			href='details.htm'>View My Profile</a> <a href='loginUser.htm'>Back
 			To Home Page</a>
 	</nav>

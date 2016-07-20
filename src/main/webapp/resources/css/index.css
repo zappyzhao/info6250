@@ -30,13 +30,13 @@ nav a.logo:hover {
 	color: #fff;
 }
 
-#myBtn:hover, button.signUpBtn:hover {
+#myBtn:hover, button.signUpBtn:hover, #adminBtn:hover {
 	background-color: gray;
 	text-decoration: none;
 	color: #fff;
 }
 
-#myBtn, button.signUpBtn {
+#myBtn, button.signUpBtn, #adminBtn {
 	background: none;
 	border:none;
 	color: #fff;
@@ -101,7 +101,9 @@ input[type="radio"] {
 	margin-left: 10%;
 }
 
-
+#errormessage, #errormessage1 {
+	color:red;
+}
 
 }
 
@@ -114,6 +116,11 @@ input[type="radio"] {
 
 
 @media screen and (max-width: 500px) {
+	
+#errormessage, #errormessage1 {
+	color:red;
+}
+
 * {
 	margin:0;
 	padding:0;

@@ -1,4 +1,11 @@
 @media screen and (min-width: 992px) {
+
+#createTable {
+	align: center;
+	width: 80%;
+	
+}	
+	
 * {
 	margin: 0; 
 }
@@ -23,6 +30,7 @@ nav {
 
 .subSection {
 	height: 50%;
+	width: 100%;
 	background-color: #fffff6;
 }
 
@@ -292,6 +300,7 @@ div.seeProfile input {
 div#searchSec {
 	text-align: center;
 	padding-top: 2%;
+	overflow: scroll;
 }
 
 ul.dropdown-menu {
@@ -302,6 +311,10 @@ ul.dropdown-menu {
 
 ul.dropdown-menu li a{
 	color: #fff;
+}
+
+#errorMessage, #errorMessageId, #errormessage {
+	color: red;
 }
 
 }
@@ -320,6 +333,10 @@ ul.dropdown-menu li a{
 
 
 @media screen and (max-width: 992px) {
+#errorMessage, #errorMessageId, #errormessage {
+	color: red;
+}	
+	
 * {
 	margin: 0; 
 }
@@ -647,6 +664,10 @@ ul.dropdown-menu li a{
 
 
 @media screen and (max-width: 768px) {
+#errorMessage, #errorMessageId, #errormessage {
+	color: red;
+}	
+	
 * {
 	margin: 0; 
 }

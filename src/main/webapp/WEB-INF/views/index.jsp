@@ -16,25 +16,37 @@
 	<script language="JavaScript" src="im/im.js"></script>
  -->
 	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/index.css" />" />
+	<script language="JavaScript" src="<c:url value="/resources/javascript/index.js" />"></script>
 	
 	<script>
 		$(document).ready(function(){
+			
 			$("#myBtn").click(function(){
 				$("#myModal").modal();
 			});
       $(".signUpBtn").click(function(){
         $("#myModal2").modal();
       });
+      
+      
 		});
 	</script>
 </head>
 <body>
 	<nav>
 	<a href="index.jsp" class="logo">Meet With You</a>
+	  	<button type="button" class="btn btn-default btn-lg adminBtn" id="adminBtn">Staff Member</button>
 		<button type="button" class="btn btn-default btn-lg signUpBtn">Sign Up</button>
 	  	<button type="button" class="btn btn-default btn-lg" id="myBtn">Log In</button>
 	</nav>
 	
+	<div class="background-wrap">
+	<video id="bgvid" preload="auto" autoplay loop muted>
+	<source src="<c:url value="/resources/img/video.mp4"/>" type="video/mp4" />
+	Your browser does not support HTML5 video.
+	</video>
+</div>
+
 	<div class="content">
 		<h2>Millions of member profiles</h2>
 		<h2>Thousands more joining each day</h2>
@@ -57,21 +69,22 @@
         </div>
         <div class="modal-body" style="padding:40px 50px;">
         <!-- log in jsp !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  -->
-          <form:form method="post" action="loginUser.htm" commandName="user">
+          <form:form id="loginForm" method="post" action="loginUser.htm" commandName="user">
             <div class="form-group">
               <label><span class="glyphicon glyphicon-user"></span> Email Address</label>
-              <form:input type="text" path="email.emailAdd" class="form-control" placeholder="Enter EmailAddress" required="required" />
+              <form:input type="email" path="email.emailAdd" class="field form-control" placeholder="Enter EmailAddress" required="required" />
             </div>
             <div class="form-group">
               <label><span class="glyphicon glyphicon-eye-open"></span> Password</label>
-              <form:input type="password" path="password" class="form-control" placeholder="Enter password" required="required" />
+              <form:input type="password" path="password" class="field form-control" placeholder="Enter password" required="required" />
             </div>
             <%-- 
             <div class="checkbox">
               <label><form:checkbox path="" checked="checked">Remember me</label>
             </div> --%>
-              <input type="submit" class="btn btn-success btn-block" value=" Login" /><br />
+              <input id="loginBtn" type="submit" class="btn btn-success btn-block" value=" Login" /><br />
           </form:form>
+          <div id="errormessage" align="center"></div>
         </div>
         <div class="modal-footer">
           <p>Not a member? <a class="signUpBtn">Sign Up</a></p>
@@ -97,18 +110,18 @@
         </div>
         <div class="modal-body" style="padding:40px 50px;">
         <!-- sign up jsp !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  -->
-          <form:form method="post" action="addUser.htm" commandName="user">
+          <form:form id="signupForm" method="post" action="addUser.htm" commandName="user">
             <div class="form-group">
               <label><span class="glyphicon glyphicon-user"></span> Username</label>
-              <form:input type="text" path="username" class="form-control" placeholder="Enter Username" required="required" />
+              <form:input type="text" path="username" class="field form-control" placeholder="Enter Username" required="required" />
             </div>
+            <!-- <div class="form-group">
+              <label><span class="glyphicon glyphicon-eye-open"></span> Password</label>
+              <input type="password" id="password1" class="field form-control" placeholder="Enter password (Confidential)" required="required" />
+            </div> -->
             <div class="form-group">
               <label><span class="glyphicon glyphicon-eye-open"></span> Password</label>
-              <input name="password1" class="form-control" placeholder="Enter password (Confidential)" required="required" />
-            </div>
-            <div class="form-group">
-              <label><span class="glyphicon glyphicon-eye-open"></span> Re-enter Password</label>
-              <form:password path="password" class="form-control" placeholder="Re-enter password" required="required" />
+              <form:password id="password" path="password" class="field form-control" placeholder="Enter password" required="required" />
             </div>
 
             <div class="form-inline">
@@ -118,7 +131,8 @@
             <br />
             <div class="form-group">
               <label><span class="glyphicon glyphicon-envelope"></span> Email Address</label>
-              <form:input path="email.emailAdd" class="form-control" placeholder="Enter Email (Confidential)" required="required" />
+              <form:input type="email" path="email.emailAdd" class="field form-control" placeholder="Enter Email (Confidential)" required="required" />
+              <form:errors path="email.emailAdd"></form:errors>
             </div>
             <div class="form-group">
               <label><span class="glyphicon glyphicon-info-sign"></span> You are a</label>
@@ -137,15 +151,16 @@
 
             <div class="form-group">
               <label><span class="glyphicon glyphicon-globe"></span> State</label>
-              <form:input path="state" class="form-control" placeholder="Enter State" required="required" />
+              <form:input path="state" class="field form-control" placeholder="Enter State" required="required" />
             </div>
             <div class="form-group">
               <label><span class="glyphicon glyphicon-globe"></span> City</label>
-              <form:input path="city" class="form-control" placeholder="Enter City" required="required" />
+              <form:input path="city" class="field form-control" placeholder="Enter City" required="required" />
             </div>
 
-              <input type="submit" class="btn btn-success btn-block" value="Sign Up Now!" />
+              <input id="signupBtn" type="submit" class="btn btn-success btn-block" value="Sign Up Now!" />
           </form:form>
+          <div id="errormessage1" align="center"></div>
         </div> <!-- model-body -->
         <div class="modal-footer">
           <p>I confirm that I have read and agreed to the <a href="#" onClick="javascript:launchWindow('termsandconditions.html','TermsAndCond',700,550,'');" class="default">Terms and Conditions of Service</a> of membership at CSE220ServiceByYusufOzbek.com</p>
